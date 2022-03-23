@@ -98,7 +98,7 @@ public:
     * @brief Pure virtual function, the function of scanning touch points, this function should be implemented in subclasses
     * @return String type, stores the id, coordinates, size and other information of all touch points
     */
-  virtual String scan() = 0;
+  virtual sPointList_t scan() = 0;
   uint8_t direction  = 0;
 };
 
