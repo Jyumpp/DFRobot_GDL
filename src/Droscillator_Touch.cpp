@@ -13,7 +13,7 @@ Drosc_Touch::Drosc_Touch(sGdlIFDev_t *dev, uint8_t cs, uint8_t rst, uint8_t irq,
 
 Drosc_Touch::~Drosc_Touch(){}
 void Drosc_Touch::initTouch(){
-  _points = "";
+  _points.points = 0;
   _pNum = 0;
   memset(&_size, 0, sizeof(_size));
   memset(&_point, 0, sizeof(sPoints_t));
@@ -116,14 +116,10 @@ void Drosc_Touch_GT911::begin(uint32_t freq){
   //Serial.println("_size.yh = ");Serial.println(_size.yh);
 }
 
-String Drosc_Touch_GT911::scan(){
-   return gt911Scan();
-}
-String Drosc_Touch_GT911::gt911Scan()
+sPointList_t Drosc_Touch_GT911::scan()
 {
   uint8_t flag = 0;
   uint8_t val = 0x00;
-  String s = "";
   memset(_p, 0, sizeof(_p));
   readReg(0x814E, &flag, 1);
   if((flag & 0x80) ||((flag&0x0F)<6)){
@@ -132,6 +128,8 @@ String Drosc_Touch_GT911::gt911Scan()
   if((flag & 0x80) &&((flag&0x0F)<6)){
       readReg(0x814F, &_p, sizeof(_p));
       _pNum = flag&0x0F;
+      sPointList_t pList;
+      pList.numTouch = _pNum;
       for(uint8_t i = 0; i < _pNum; i++){
           _point.id = _p[i].id;
           if(id == "5688")
@@ -142,15 +140,11 @@ String Drosc_Touch_GT911::gt911Scan()
           _point.hSize = _p[i].hSize;
           if((_point.x <= _size.xw) && (_point.y <= _size.yh)){
               pointRemap(_point.x,_point.y,319,479); 
-              s += String(_point.id) + "," + String(_point.x) + "," + String(_point.y) + "," + String(_point.wSize) + ","+ String(_point.hSize) + " ";
+              pList.points[i] = _point;
           }
       }
   }
-  //Serial.println(s);
-  if(s.length() == 0){
-     s = "255,0,0,0,0 ";
-  }
   delay(10);
-  _points = s;
-  return s;
+  _points = pList;
+  return pList;
 }

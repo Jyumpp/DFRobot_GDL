@@ -51,8 +51,13 @@ public:
       uint16_t yh;/**<Touchpad size: height*/
   }sResolution_t;
   
+  typedef struct{
+      uint8_t numTouch;/**<Number of touch points*/
+      sPoints_t points[5];/**<Touch point information*/
+  }sPointList_t;
+  
   sResolution_t _size;/**<Touchpad size struct for storing the resolution of the touchpad: width x height*/
-  String _points;/**<String to store the information of touch point: ID, X/Y coordinates, point size, and the point information needs to be separated by ",", and the points are separated by spaces*/
+  sPointList_t _points;/**<String to store the information of touch point: ID, X/Y coordinates, point size, and the point information needs to be separated by ",", and the points are separated by spaces*/
   sPoints_t _point;/**<Data of one point*/
   uint8_t _pNum;
   /**
@@ -103,7 +108,7 @@ public:
   Drosc_Touch_GT911(uint8_t addr = 0x5D, uint8_t rst = 255, uint8_t irq = 255);
   ~Drosc_Touch_GT911();
   void begin(uint32_t freq = 0);
-  String scan();
+  sPointList_t scan();
 private:
   typedef struct{
       uint8_t id;
@@ -115,7 +120,6 @@ private:
       uint8_t hSize;
       uint8_t reserve;
   }sGtPoints_t;
-  String gt911Scan();
   uint8_t IC;
   sGtPoints_t _p[5];
   String id;
