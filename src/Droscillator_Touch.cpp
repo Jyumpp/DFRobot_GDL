@@ -125,10 +125,11 @@ Drosc_Touch::sPointList_t Drosc_Touch_GT911::scan()
   if((flag & 0x80) ||((flag&0x0F)<6)){
       writeBuf(0x814E, &val, 1);
   }
+  sPointList_t pList;
   if((flag & 0x80) &&((flag&0x0F)<6)){
       readReg(0x814F, &_p, sizeof(_p));
       _pNum = flag&0x0F;
-      sPointList_t pList;
+      
       pList.numTouch = _pNum;
       for(uint8_t i = 0; i < _pNum; i++){
           _point.id = _p[i].id;
