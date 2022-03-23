@@ -13,7 +13,7 @@ Drosc_Touch::Drosc_Touch(sGdlIFDev_t *dev, uint8_t cs, uint8_t rst, uint8_t irq,
 
 Drosc_Touch::~Drosc_Touch(){}
 void Drosc_Touch::initTouch(){
-  _points.points = 0;
+  _points.numTouch = 0;
   _pNum = 0;
   memset(&_size, 0, sizeof(_size));
   memset(&_point, 0, sizeof(sPoints_t));
