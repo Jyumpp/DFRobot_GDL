@@ -116,7 +116,7 @@ void Drosc_Touch_GT911::begin(uint32_t freq){
   //Serial.println("_size.yh = ");Serial.println(_size.yh);
 }
 
-sPointList_t Drosc_Touch_GT911::scan()
+Drosc_Touch::sPointList_t Drosc_Touch_GT911::scan()
 {
   uint8_t flag = 0;
   uint8_t val = 0x00;
